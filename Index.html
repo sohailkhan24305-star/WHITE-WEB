@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHITE WEB</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: white;
+  text-align: center;
+  color: #202124;
+}
+h1 {
+  margin-top: 100px;
+  font-size: 55px;
+}
+span { color: #4285f4; }
+.search {
+  display: flex;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 550px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  padding: 8px;
+}
+input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px;
+  font-size: 16px;
+  min-width: 0;
+}
+button {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 25px;
+}
+.tabs button {
+  margin: 5px;
+  background: #f1f3f4;
+  color: #333;
+}
+p { color: #777; }
+</style>
+</head>
+<body>
+
+<h1>WHITE<span>WEB</span></h1>
+<p>Search Freely. Stay Private.</p>
+
+<form id="searchForm" class="search">
+<input id="search" placeholder="Search anything..." required>
+<button type="submit">Search</button>
+</form>
+
+<div class="tabs">
+<button type="button" onclick="searchType('')">Web</button>
+<button type="button" onclick="searchType('&ia=images')">Images</button>
+<button type="button" onclick="searchType('&ia=videos')">Videos</button>
+<button type="button" onclick="searchType('&ia=news')">News</button>
+</div>
+
+<p>Powered by DuckDuckGo</p>
+<p>WHITE WEB © 2026</p>
+
+<script>
+let type = '';
+
+function searchType(value) {
+  type = value;
+}
+
+document.getElementById('searchForm')
+.addEventListener('submit', function(e) {
+  e.preventDefault();
+  let q = document.getElementById('search').value.trim();
+  if(q) {
+    window.location.href =
+    'https://duckduckgo.com/?q=' +
+    encodeURIComponent(q) + type;
+  }
+});
+</script>
+
+</body>
+</html>
+
