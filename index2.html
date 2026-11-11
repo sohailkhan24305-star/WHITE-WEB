@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Web 2.0</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f8fa;
+  color: #202124;
+  min-height: 100vh;
+}
+
+header {
+  height: 65px;
+  background: white;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: #777;
+}
+
+.menu {
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+main {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 70px 18px 30px;
+}
+
+.welcome {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.welcome h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.welcome p {
+  color: #777;
+  font-size: 15px;
+}
+
+.search-box {
+  background: white;
+  border: 1px solid #dedede;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.04);
+}
+
+textarea {
+  width: 100%;
+  min-height: 85px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  color: #222;
+}
+
+textarea::placeholder {
+  color: #999;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.tool-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button, .upload {
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 13px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover, .upload:hover {
+  background: #f1f1f1;
+}
+
+.send {
+  background: #202124;
+  color: white;
+  border: none;
+  padding: 11px 20px;
+}
+
+.send:hover {
+  background: #444;
+}
+
+#fileInput {
+  display: none;
+}
+
+#fileName {
+  color: #777;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+#chat {
+  margin-top: 30px;
+}
+
+.message {
+  padding: 15px;
+  border-radius: 13px;
+  margin-bottom: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.user {
+  background: #e9edf3;
+  margin-left: 35px;
+}
+
+.ai {
+  background: white;
+  border: 1px solid #eee;
+  margin-right: 35px;
+}
+
+footer {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  padding: 30px 10px;
+}
+
+@media(max-width: 600px) {
+  main {
+    padding-top: 55px;
+  }
+
+  .welcome h1 {
+    font-size: 29px;
+  }
+
+  .tools {
+    align-items: flex-end;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">WHITE <span>WEB</span></div>
+  <button class="menu" aria-label="Menu">☰</button>
+</header>
+
+<main>
+
+  <section class="welcome">
+    <h1>Welcome to White Web</h1>
+    <p>Search smarter. Discover more. Explore freely.</p>
+  </section>
+
+  <section class="search-box">
+
+    <textarea id="question"
+      placeholder="Ask White AI anything..."></textarea>
+
+    <div class="tools">
+
+      <div class="tool-left">
+
+        <label class="upload" for="fileInput">
+          ＋ Upload
+        </label>
+
+        <input type="file" id="fileInput"
+          accept="image/*,.pdf,.txt,.doc,.docx">
+
+        <button onclick="startVoice()">🎤 Voice</button>
+
+      </div>
+
+      <button class="send" onclick="sendMessage()">
+        Send ↑
+      </button>
+
+    </div>
+
+    <div id="fileName"></div>
+
+  </section>
+
+  <section id="chat"></section>
+
+</main>
+
+<footer>
+  White Web 2.0 · Simple. Smart. Secure.
+</footer>
+
+<script>
+const question = document.getElementById("question");
+const chat = document.getElementById("chat");
+const fileInput = document.getElementById("fileInput");
+const fileName = document.getElementById("fileName");
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  fileName.textContent = file ? "Selected: " + file.name : "";
+});
+
+function addMessage(text, type) {
+  const message = document.createElement("div");
+  message.className = "message " + type;
+  message.textContent = text;
+  chat.appendChild(message);
+}
+
+function sendMessage() {
+  const text = question.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user");
+  question.value = "";
+
+  addMessage(
+    "White AI interface is ready. Connect the secure AI backend to receive real AI answers.",
+    "ai"
+  );
+}
+
+function startVoice() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Voice input is not supported in this browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-IN";
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+    question.value = event.results[0][0].transcript;
+  };
+
+  recognition.onerror = () => {
+    alert("Voice input could not start. Please try again.");
+  };
+
+  recognition.start();
+}
+
+question.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+</script>
+
+</body>
+</html>
